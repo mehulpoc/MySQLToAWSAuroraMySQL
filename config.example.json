@@ -1,0 +1,22 @@
+{
+  "source": {
+    "host": "127.0.0.1",
+    "port": 3307,
+    "user": "miguser",
+    "database": "marketo_src",
+    "container": "marketo-src"
+  },
+  "target": {
+    "host": "127.0.0.1",
+    "port": 3308,
+    "user": "tgtuser",
+    "database": "marketo_tgt",
+    "container": "marketo-tgt"
+  },
+  "work_dir": "/tmp/marketo_migration/work",
+  "state_dir": "/tmp/marketo_migration/state",
+  "chunk_size": 5000,
+  "parallelism": 4,
+  "tables": [],
+  "exclude_tables": []
+}

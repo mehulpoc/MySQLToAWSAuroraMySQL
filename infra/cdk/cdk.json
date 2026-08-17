@@ -1,0 +1,79 @@
+{
+  "app": "python3 app.py",
+  "watch": {
+    "include": ["**"],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "requirements*.txt",
+      ".venv",
+      "**/__pycache__",
+      ".git",
+      "**/*.pyc"
+    ]
+  },
+  "context": {
+    "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
+    "@aws-cdk/core:stackRelativeExports": true,
+    "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
+
+    "project_name":            "marketo-migration",
+    "environment":             "dev",
+
+    "aurora_engine_version":   "5.7.mysql_aurora.2.12.1",
+    "db_name":                 "marketo_tgt",
+    "db_username":             "admin",
+
+    "environments": {
+      "dev": {
+        "account":                 "",
+        "region":                  "us-east-1",
+        "db_instance_class":       "t4g.medium",
+        "cluster_instance_count":  "1",
+        "backup_retention_days":   "1",
+        "deletion_protection":     "false",
+        "create_vpc":              "true",
+        "vpc_cidr":                "10.10.0.0/16",
+        "allowed_cidrs":           ""
+      },
+      "qa": {
+        "account":                 "",
+        "region":                  "us-east-1",
+        "db_instance_class":       "t4g.medium",
+        "cluster_instance_count":  "1",
+        "backup_retention_days":   "3",
+        "deletion_protection":     "false",
+        "create_vpc":              "true",
+        "vpc_cidr":                "10.20.0.0/16",
+        "allowed_cidrs":           ""
+      },
+      "staging": {
+        "account":                 "",
+        "region":                  "us-east-1",
+        "db_instance_class":       "r6g.large",
+        "cluster_instance_count":  "2",
+        "backup_retention_days":   "7",
+        "deletion_protection":     "true",
+        "create_vpc":              "true",
+        "vpc_cidr":                "10.30.0.0/16",
+        "allowed_cidrs":           ""
+      },
+      "prod": {
+        "account":                 "",
+        "region":                  "us-east-1",
+        "db_instance_class":       "r6g.xlarge",
+        "cluster_instance_count":  "2",
+        "backup_retention_days":   "14",
+        "deletion_protection":     "true",
+        "create_vpc":              "true",
+        "vpc_cidr":                "10.40.0.0/16",
+        "allowed_cidrs":           ""
+      }
+    },
+
+    "_comment_environments":  "dev/qa/staging deploy into one shared AWS account; prod deploys into a separate account. Either fill in 'account' per environment here, or leave it blank and export AWS_ACCOUNT_DEV / AWS_ACCOUNT_QA / AWS_ACCOUNT_STAGING / AWS_ACCOUNT_PROD (preferred for CI, keeps account IDs out of git). The env var always wins over the value in this file.",
+    "_comment_allowed_cidrs": "Comma-separated CIDRs for port 3306 ingress. E.g. '10.0.0.0/8,192.168.1.0/24'. Defaults to VPC CIDR when empty.",
+    "_comment_create_vpc":    "Set to 'false' and provide 'existing_vpc_id' to reuse an existing VPC.",
+    "_comment_existing_vpc":  "Set 'existing_vpc_id' and 'allowed_cidrs' when create_vpc is false."
+  }
+}
