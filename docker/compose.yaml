@@ -1,0 +1,53 @@
+services:
+  source:
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: marketo-src
+    command: >
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --binlog-row-image=FULL
+      --server-id=1
+      --gtid-mode=OFF
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: marketo_src
+      MYSQL_USER: miguser
+      MYSQL_PASSWORD: migpw
+    ports:
+      - "3307:3306"
+    volumes:
+      - source_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpw"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  target:
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: marketo-tgt
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: marketo_tgt
+      MYSQL_USER: tgtuser
+      MYSQL_PASSWORD: tgtpw
+    ports:
+      - "3308:3306"
+    volumes:
+      - target_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpw"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  source_data:
+  target_data:

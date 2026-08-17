@@ -1,0 +1,21 @@
+{
+  "source": {
+    "host": "127.0.0.1",
+    "port": 3307,
+    "user": "miguser",
+    "database": "marketo_src",
+    "container": "marketo-src"
+  },
+  "target": {
+    "host": "REPLACE_WITH_YOUR_AURORA_CLUSTER_ENDPOINT",
+    "port": 3306,
+    "user": "REPLACE_WITH_AURORA_USER",
+    "database": "marketo_tgt"
+  },
+  "work_dir": "/tmp/marketo_migration/work",
+  "state_dir": "/tmp/marketo_migration/state",
+  "chunk_size": 5000,
+  "parallelism": 4,
+  "tables": [],
+  "exclude_tables": []
+}
